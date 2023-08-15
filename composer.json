@@ -23,8 +23,6 @@
   "config": {
     "sort-packages": true
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "require-dev": {
     "laravel/pint": "^1.10"
   }
