@@ -76,6 +76,12 @@ class FirstController extends Controller
 
 > The "route" annotation working as group function in Laravel.
 
+**Available options for Router annotation:**
+- _name_ - the name of a group,
+- _prefix_ - the prefix of a group,
+- _domain_ - the domain of a group,
+- _middlewares_ - the list of middlewares of a group,
+
 Now, we can define the first route for method.
 
 ```php
