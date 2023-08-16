@@ -112,9 +112,11 @@ trait Loader
      */
     private function addRoute(LaravelRouter $router, Method $annotation, array $data, ReflectionClass $class, ReflectionMethod $method): void
     {
+        $name = $data['name'].($annotation->getName() ?? Str::snake($method->getName()));
+
         $router
             ->{$annotation->getMethod()}($annotation->getUri(), [$class->getName(), $method->getName()])
-            ->name($annotation->getName() ?? Str::snake($method->getName()))
+            ->name($name)
             ->middleware($annotation->getMiddlewares());
 
         if ($annotation->getWhere()) {
