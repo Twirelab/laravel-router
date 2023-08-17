@@ -1,19 +1,31 @@
-**Describe the bug**<br/>
+---
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: "Bug \U0001F41E"
+assignees: ''
+
+---
+
+**Describe the bug**
 A clear and concise description of what the bug is.
 
-**Versions**<br/>
-Package version:<br/>
-PHP version:<br/>
+**To Reproduce**
+Steps to reproduce the behaviour:
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See the error
 
-**To Reproduce**<br/>
-Steps to reproduce the behavior:
-
-**Expected behavior**<br/>
+**Expected behaviour**
 A clear and concise description of what you expected to happen.
 
-**Additional context**<br/>
-Add any other context about the problem here.
+**Screenshots**
+If applicable, add screenshots to help explain your problem.
 
-**Environment (please complete the following information, because it helps us investigate better):**
-- OS: [e.g. macOS]
-- Version [e.g. 22]
+**Versions (please complete the following information):**
+ - Package:
+ - PHP:
+
+**Additional context**
+Add any other context about the problem here.
