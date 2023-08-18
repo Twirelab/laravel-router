@@ -2,7 +2,7 @@
 
 > Attention! This package is not suitable for use in production.
 
-Router is a new way of define routes in Laravel framework using annotations.
+The router is a new way of defining routes in the Laravel framework using annotations.
 
 **Requirements**
 - Laravel 8 or above.
@@ -18,7 +18,7 @@ composer require twirelab/laravel-router
 
 ## Usage
 ### Provider
-In the place where you define a routes (ex. `RouteServiceProvider`) you need call a **Loader** class from package.
+In the place where you define routes (ex. `RouteServiceProvider`) you need to call a **Loader** class from the package.
 
 ```php
 use Twirelab/LaravelRouter/Loader;
@@ -36,7 +36,7 @@ Loader::loadFromDirectories([
 ]);
 ```
 
-From now, the Loader automatically import Controllers from selected directory/directories.
+From now, the Loader automatically imports Controllers from selected directories.
 
 If you prefer, select controllers manually all the time. You can use the `loadControllers` method.
 
@@ -67,14 +67,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Twirelab\LaravelRouter\Annotations\Router;
 
-#[Router()]
+#[Router]
 class FirstController extends Controller
 {
     // ... methods
 }
 ```
 
-> The "route" annotation working as group function in Laravel.
+> The "route" annotation works as a group function in Laravel.
 
 **Available options for Router annotation:**
 - _name_ - the name of a group,
@@ -82,7 +82,7 @@ class FirstController extends Controller
 - _domain_ - the domain of a group,
 - _middlewares_ - the list of middlewares of a group,
 
-Now, we can define the first route for method.
+Now, we can define the first route for the method.
 
 ```php
 <?php
@@ -94,13 +94,13 @@ use Twirelab\LaravelRouter\Annotations\Method;
 use Twirelab\LaravelRouter\Annotations\Router;
 use Twirelab\LaravelRouter\Enums\Methods;
 
-#[Router()]
+#[Router]
 class FirstController extends Controller
 {
     #[Method(uri: '/', method: Methods::GET)]
     public function index()
     {
-        // ... logic of method
+        // ... logic of the method
     }
 }
 ```
@@ -108,7 +108,7 @@ class FirstController extends Controller
 Our route: `GET - / - index > FirstController@index`
 
 **Available options for Method annotation:**
-- _uri_ - the address url for a route,
+- _uri_ - the address URL for a route,
 - _method_ - the method of a route,
 - _name_ - the name of a route,
 - _middlewares_ - the list of middlewares of a route,
