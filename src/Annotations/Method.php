@@ -6,6 +6,10 @@ namespace Twirelab\LaravelRouter\Annotations;
 
 use Twirelab\LaravelRouter\Enums\Methods;
 
+use Twirelab\LaravelRouter\Enums\Versioning;
+
+use const http\Client\Curl\VERSIONS;
+
 /**
  * Annotation class @Method()
  *
@@ -22,6 +26,7 @@ class Method
         private readonly ?string $name = null,
         private readonly string|array|null $middlewares = null,
         private readonly ?array $where = null,
+        private readonly ?string $version = null,
     ) {
     }
 
@@ -48,5 +53,10 @@ class Method
     public function getWhere(): ?array
     {
         return $this->where;
+    }
+
+    public function getVersion(): string
+    {
+        return $this->version ?? Versioning::NEUTRAL->value;
     }
 }
