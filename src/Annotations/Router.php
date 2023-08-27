@@ -15,7 +15,7 @@ namespace Twirelab\LaravelRouter\Annotations;
 class Router
 {
     public function __construct(
-        private readonly ?string $name = null,
+        private readonly ?string $as = null,
         private readonly ?string $prefix = null,
         private readonly ?string $domain = null,
         private readonly string|array|null $middlewares = [],
@@ -24,7 +24,7 @@ class Router
 
     public function getName(): ?string
     {
-        return $this->name;
+        return $this->as;
     }
 
     public function getPrefix(): ?string
