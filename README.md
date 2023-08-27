@@ -20,20 +20,99 @@ composer require twirelab/laravel-router
 ### Provider
 In the place where you define routes (ex. `RouteServiceProvider`) you need to call a **Loader** class from the package.
 
+The default class:
 ```php
-use Twirelab/LaravelRouter/Loader;
+<?php
 
-Loader::loadFromDirectories(
-    app_path('Http/Controllers/**/*Controllers.php')
-);
+namespace App\Providers;
 
-// or
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 
-Loader::loadFromDirectories([
-    app_path('Http/Controllers/Admin/**/*Controllers.php'),
-    app_path('Http/Controllers/Client/**/*Controllers.php'),
-    // ...etc
-]);
+class RouteServiceProvider extends ServiceProvider
+{
+    /**
+     * The path to your application's "home" route.
+     *
+     * Typically, users are redirected here after authentication.
+     *
+     * @var string
+     */
+    public const HOME = '/home';
+
+    /**
+     * Define your route model bindings, pattern filters, and other route configuration.
+     */
+    public function boot(): void
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+
+        $this->routes(function () {
+            Route::middleware('api')
+                ->prefix('api')
+                ->group(base_path('routes/api.php'));
+
+            Route::middleware('web')
+                ->group(base_path('routes/web.php'));
+        });
+    }
+}
+```
+
+Change to this:
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Twirelab\LaravelRouter\Facades\Loader;
+
+class RouteServiceProvider extends ServiceProvider
+{
+    /**
+     * The path to your application's "home" route.
+     *
+     * Typically, users are redirected here after authentication.
+     *
+     * @var string
+     */
+    public const HOME = '/home';
+
+    /**
+     * Define your route model bindings, pattern filters, and other route configuration.
+     */
+    public function boot(): void
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+
+        $this->routes(function () {
+            Loader::group([
+                'prefix' => 'api',
+                'middleware' => 'api',
+            ])->loadFromDirectories(
+                app_path('Http/Controllers/API/**/*Controller.php'),
+            );
+
+            Loader::group([
+                'middleware' => 'web',
+            ])->loadFromDirectories(
+                app_path('Http/Controllers/*Controller.php'),
+            );
+        });
+    }
+}
+
 ```
 
 From now, the Loader automatically imports Controllers from selected directories.
@@ -43,17 +122,40 @@ If you prefer, select controllers manually all the time. You can use the `loadCo
 ```php
 use Twirelab/LaravelRouter/Loader;
 
-Loader::loadControllers(
+Loader::group([
+    'prefix' => 'api',
+    'middleware' => 'api',
+])->loadControllers(
     App\Http\Controllers\FirstController::class,
 );
 
 // or
 
-Loader::loadControllers([
+Loader::group([
+    'prefix' => 'api',
+    'middleware' => 'api',
+])->loadControllers(
     App\Http\Controllers\FirstController::class,
     App\Http\Controllers\SecondController::class,
-    // ...etc
-]);
+);
+```
+
+If don't want to use a group function (for example: you don't need a "main" group
+like API or Web) you can use rest of functions directly.
+
+```php
+use Twirelab/LaravelRouter/Facades/Loader;
+
+Loader::loadFromDirectories(
+    app_path('Http/Controllers/**/*Controllers.php')
+);
+
+// or
+
+Loader::loadControllers(
+    App\Http\Controllers\FirstController::class,
+);
+
 ```
 
 ### Controller
@@ -77,7 +179,7 @@ class FirstController extends Controller
 > The "route" annotation works as a group function in Laravel.
 
 **Available options for Router annotation:**
-- _name_ - the name of a group,
+- _as_ - the name of a group,
 - _prefix_ - the prefix of a group,
 - _domain_ - the domain of a group,
 - _middlewares_ - the list of middlewares of a group,

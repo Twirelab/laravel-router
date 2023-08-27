@@ -58,6 +58,6 @@ final class Loader
             return;
         }
 
-        Route::group($this->group, fn() => App::make($loader)->load(Arr::wrap($path)));
+        Route::group($this->group, fn () => App::make($loader)->load(Arr::wrap($path)));
     }
 }

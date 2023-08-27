@@ -14,7 +14,7 @@ class LaravelRouterServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             abstract: 'laravel-router',
-            concrete: fn() => new Loader()
+            concrete: fn () => new Loader()
         );
     }
 }
