@@ -50,9 +50,9 @@ trait Loader
     /**
      * Set a controller data.
      */
-    private function setControllerData(string $name = null, string $prefix = null, string $domain = null, string|array $middlewares = null): array
+    private function setControllerData(string $as = null, string $prefix = null, string $domain = null, string|array $middlewares = null): array
     {
-        return compact('name', 'prefix', 'domain', 'middlewares');
+        return compact('as', 'prefix', 'domain', 'middlewares');
     }
 
     /**
@@ -69,7 +69,7 @@ trait Loader
 
         if ($annotation) {
             $data = $this->setControllerData(
-                name: $annotation->getName(),
+                as: $annotation->getName(),
                 prefix: $annotation->getPrefix(),
                 domain: $annotation->getDomain(),
                 middlewares: $annotation->getMiddlewares()
@@ -112,7 +112,7 @@ trait Loader
      */
     private function addRoute(LaravelRouter $router, Method $annotation, array $data, ReflectionClass $class, ReflectionMethod $method): void
     {
-        $name = $data['name'].($annotation->getName() ?? Str::snake($method->getName()));
+        $name = $annotation->getName() ?? Str::snake($method->getName());
 
         $router
             ->{$annotation->getMethod()}($annotation->getUri(), [$class->getName(), $method->getName()])
