@@ -50,9 +50,14 @@ trait Loader
     /**
      * Set a controller data.
      */
-    private function setControllerData(string $as = null, string $prefix = null, string $domain = null, string|array $middlewares = null): array
+    private function setControllerData(
+        string $as = null,
+        string $prefix = null,
+        string $domain = null,
+        string|array $middleware = null
+    ): array
     {
-        return compact('as', 'prefix', 'domain', 'middlewares');
+        return compact('as', 'prefix', 'domain', 'middleware');
     }
 
     /**
@@ -72,7 +77,7 @@ trait Loader
                 as: $annotation->getName(),
                 prefix: $annotation->getPrefix(),
                 domain: $annotation->getDomain(),
-                middlewares: $annotation->getMiddlewares()
+                middleware: $annotation->getMiddleware()
             );
         }
 

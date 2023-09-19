@@ -37,7 +37,7 @@ class Router
         return $this->domain;
     }
 
-    public function getMiddlewares(): array|string|null
+    public function getMiddleware(): array|string|null
     {
         return $this->middlewares;
     }
