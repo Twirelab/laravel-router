@@ -55,8 +55,7 @@ trait Loader
         string $prefix = null,
         string $domain = null,
         string|array $middleware = null
-    ): array
-    {
+    ): array {
         return compact('as', 'prefix', 'domain', 'middleware');
     }
 
