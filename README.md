@@ -5,7 +5,7 @@
 The router is a new way of defining routes in the Laravel framework using annotations.
 
 **Requirements**
-- Laravel 11 or above.
+- Laravel 8 or above.
 - PHP 8.1 or above.
 
 ## Installation
