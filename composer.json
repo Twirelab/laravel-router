@@ -11,11 +11,11 @@
   "license": "MIT",
   "require": {
     "php": "^8.1",
-    "illuminate/support": "^8.0 | ^9.0 | ^10.0",
-    "illuminate/routing": "^8.0 | ^9.0 | ^10.0"
+    "illuminate/support": "^11.0",
+    "illuminate/routing": "^11.0"
   },
   "require-dev": {
-    "laravel/pint": "^1.10"
+    "laravel/pint": "^1.18"
   },
   "autoload": {
     "psr-4": {
