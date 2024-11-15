@@ -5,7 +5,7 @@
 The router is a new way of defining routes in the Laravel framework using annotations.
 
 **Requirements**
-- Laravel 8 or above.
+- Laravel 11 or above.
 - PHP 8.1 or above.
 
 ## Installation
@@ -17,7 +17,7 @@ composer require twirelab/laravel-router
 2. Done! It was simple.
 
 ## Usage
-### Provider
+### Laravel 10 and below
 In the place where you define routes (ex. `RouteServiceProvider`) you need to call a **Loader** class from the package.
 
 The default class:
@@ -147,12 +147,39 @@ like API or Web) you can use rest of functions directly.
 use Twirelab/LaravelRouter/Facades/Loader;
 
 Loader::loadFromDirectories(
-    app_path('Http/Controllers/**/*Controllers.php')
+    app_path('Http/Controllers/**/*Controller.php')
 );
 
 // or
 
 Loader::loadControllers(
+    App\Http\Controllers\FirstController::class,
+);
+
+```
+
+### Laravel 11 and below
+In the place where you define routes (ex. `api.php` or `web.php`) you need to call a **Loader** class from the package.
+
+For example:
+```php
+<?php
+
+use Twirelab\LaravelRouter\Facades\Loader;
+
+Loader::group([
+    'as' => 'v1.',
+    'prefix' => 'v1',
+])->loadFromDirectories(
+    app_path('Http/Controllers/V1/**/*Controller.php')
+);
+
+// or
+
+Loader::group([
+    'as' => 'v1.',
+    'prefix' => 'v1',
+])->loadControllers(
     App\Http\Controllers\FirstController::class,
 );
 
