@@ -1,0 +1,10 @@
+parameters:
+    level: 8
+    paths:
+        - src
+    ignoreErrors:
+        # Laravel specific patterns that PHPStan doesn't understand
+        - identifier: missingType.iterableValue
+        - identifier: missingType.generics
+    excludePaths:
+        - vendor
