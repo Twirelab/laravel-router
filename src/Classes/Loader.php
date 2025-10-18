@@ -15,22 +15,20 @@ final class Loader
 {
     public function __construct(
         protected array | null $group = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create a main group.
      */
     public function group(array $options): Loader
     {
-        $this->group = $options;
-
-        return $this;
+        return new Loader($options);
     }
 
     /**
      * Load selected controllers.
      *
+     * @param string|array<string> $controllers
      * @throws Exception
      */
     public function loadControllers(mixed $controllers): void
@@ -41,6 +39,7 @@ final class Loader
     /**
      * Load controllers from directories.
      *
+     * @param string|array<string> $path
      * @throws Exception
      */
     public function loadFromDirectories(mixed $path): void
@@ -53,11 +52,11 @@ final class Loader
      */
     private function loader(mixed $loader, mixed $path): void
     {
-        if(is_null($this->group)) {
+        if (is_null($this->group)) {
             App::make($loader)->load(Arr::wrap($path));
             return;
         }
 
-        Route::group($this->group, fn () => App::make($loader)->load(Arr::wrap($path)));
+        Route::group($this->group, fn() => App::make($loader)->load(Arr::wrap($path)));
     }
 }

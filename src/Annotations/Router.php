@@ -15,12 +15,11 @@ namespace Twirelab\LaravelRouter\Annotations;
 class Router
 {
     public function __construct(
-        private readonly ?string $as = null,
-        private readonly ?string $prefix = null,
-        private readonly ?string $domain = null,
-        private readonly string|array|null $middlewares = [],
-    ) {
-    }
+        public ?string $as = null,
+        public ?string $prefix = null,
+        public ?string $domain = null,
+        public string|array|null $middlewares = [],
+    ) {}
 
     public function getName(): ?string
     {

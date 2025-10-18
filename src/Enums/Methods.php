@@ -6,9 +6,9 @@ namespace Twirelab\LaravelRouter\Enums;
 
 enum Methods: string
 {
-    case POST = 'POST';
-    case GET = 'GET';
-    case PUT = 'PUT';
-    case DELETE = 'DELETE';
-    case ANY = 'ANY';
+    case POST = 'post';
+    case GET = 'get';
+    case PUT = 'put';
+    case DELETE = 'delete';
+    case ANY = 'any';
 }

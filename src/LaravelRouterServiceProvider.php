@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Twirelab\LaravelRouter;
 
 use Illuminate\Support\ServiceProvider;
@@ -12,9 +14,9 @@ class LaravelRouterServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
+        $this->app->singleton(
             abstract: 'laravel-router',
-            concrete: fn () => new Loader()
+            concrete: fn() => new Loader()
         );
     }
 }

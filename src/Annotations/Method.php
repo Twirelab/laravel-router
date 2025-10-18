@@ -17,13 +17,12 @@ use Twirelab\LaravelRouter\Enums\Methods;
 class Method
 {
     public function __construct(
-        private readonly string $uri,
-        private readonly Methods $method,
-        private readonly ?string $name = null,
-        private readonly string|array|null $middlewares = null,
-        private readonly ?array $where = null,
-    ) {
-    }
+        public string $uri,
+        public Methods $method,
+        public ?string $name = null,
+        public string|array|null $middlewares = null,
+        public ?array $where = null,
+    ) {}
 
     public function getUri(): string
     {

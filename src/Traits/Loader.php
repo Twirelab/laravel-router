@@ -7,7 +7,7 @@ namespace Twirelab\LaravelRouter\Traits;
 use Illuminate\Routing\Router as LaravelRouter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
+use Twirelab\LaravelRouter\Exceptions\InvalidControllerException;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
@@ -17,28 +17,29 @@ use Twirelab\LaravelRouter\Annotations\Router;
 trait Loader
 {
     /**
+     * Reflection cache to avoid repeated instantiation.
+     */
+    private static array $reflectionCache = [];
+
+    /**
      * Load a controller.
      */
     public function loadController(string $source): void
     {
         if (! class_exists($source)) {
-            throw new InvalidArgumentException(
-                message: sprintf('Class "%s" does not exist.', $source)
-            );
+            throw InvalidControllerException::classNotFound($source);
         }
 
-        $class = new ReflectionClass($source);
+        $class = $this->getCachedReflection($source);
         if ($class->isAbstract()) {
-            throw new InvalidArgumentException(
-                message: sprintf('Annotations from class "%s" cannot be read as it is abstract.', $class->getName())
-            );
+            throw InvalidControllerException::abstractClass($class->getName());
         }
 
         $controller = $this->getController($class);
 
         Route::group(
             $controller,
-            fn (LaravelRouter $router) => $this->loadMethods(
+            fn(LaravelRouter $router) => $this->loadMethods(
                 router: $router,
                 methods: $class->getMethods(),
                 data: $controller,
@@ -48,13 +49,26 @@ trait Loader
     }
 
     /**
+     * Get cached reflection class or create new one.
+     * @param class-string $className
+     */
+    private function getCachedReflection(string $className): ReflectionClass
+    {
+        if (! isset(self::$reflectionCache[$className])) {
+            self::$reflectionCache[$className] = new ReflectionClass($className);
+        }
+
+        return self::$reflectionCache[$className];
+    }
+
+    /**
      * Set a controller data.
      */
     private function setControllerData(
-        string $as = null,
-        string $prefix = null,
-        string $domain = null,
-        string|array $middleware = null
+        ?string $as = null,
+        ?string $prefix = null,
+        ?string $domain = null,
+        string|array|null $middleware = null
     ): array {
         return compact('as', 'prefix', 'domain', 'middleware');
     }
