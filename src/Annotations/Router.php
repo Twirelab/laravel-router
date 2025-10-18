@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Twirelab\LaravelRouter\Annotations;
 
+use Twirelab\LaravelRouter\Enums\Version;
+
 /**
  * Annotation class @Loader()
  *
@@ -19,6 +21,7 @@ class Router
         public ?string $prefix = null,
         public ?string $domain = null,
         public string|array|null $middlewares = [],
+        public int|Version|null $version = null,
     ) {}
 
     public function getName(): ?string
@@ -39,5 +42,10 @@ class Router
     public function getMiddleware(): array|string|null
     {
         return $this->middlewares;
+    }
+
+    public function getVersion(): int|Version|null
+    {
+        return $this->version;
     }
 }

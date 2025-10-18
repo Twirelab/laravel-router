@@ -39,5 +39,12 @@ abstract class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix' => '',
         ]);
+
+        // Setup laravel-router config
+        $app['config']->set('laravel-router', [
+            'active_versions' => [1, 2],
+            'version_in_url' => true,
+            'version_prefix' => 'v',
+        ]);
     }
 }

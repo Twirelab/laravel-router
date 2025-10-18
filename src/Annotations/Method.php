@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Twirelab\LaravelRouter\Annotations;
 
 use Twirelab\LaravelRouter\Enums\Methods;
+use Twirelab\LaravelRouter\Enums\Version;
 
 /**
  * Annotation class @Method()
@@ -22,6 +23,7 @@ class Method
         public ?string $name = null,
         public string|array|null $middlewares = null,
         public ?array $where = null,
+        public int|Version|null $version = null,
     ) {}
 
     public function getUri(): string
@@ -47,5 +49,10 @@ class Method
     public function getWhere(): ?array
     {
         return $this->where;
+    }
+
+    public function getVersion(): int|Version|null
+    {
+        return $this->version;
     }
 }
