@@ -5,11 +5,14 @@
 The router is a new way of defining routes in the Laravel framework using annotations.
 
 **Requirements**
+
 - Laravel 8 or above.
-- PHP 8.1 or above.
+- PHP 8.2 or above.
 
 ## Installation
+
 1. Install the package via composer
+
 ```shell
 composer require twirelab/laravel-router
 ```
@@ -17,10 +20,13 @@ composer require twirelab/laravel-router
 2. Done! It was simple.
 
 ## Usage
+
 ### Laravel 10 and below
+
 In the place where you define routes (ex. `RouteServiceProvider`) you need to call a **Loader** class from the package.
 
 The default class:
+
 ```php
 <?php
 
@@ -65,6 +71,7 @@ class RouteServiceProvider extends ServiceProvider
 ```
 
 Change to this:
+
 ```php
 <?php
 
@@ -159,9 +166,11 @@ Loader::loadControllers(
 ```
 
 ### Laravel 11 and below
+
 In the place where you define routes (ex. `api.php` or `web.php`) you need to call a **Loader** class from the package.
 
 For example:
+
 ```php
 <?php
 
@@ -186,6 +195,7 @@ Loader::group([
 ```
 
 ### Controller
+
 If you want routes to load properly, you need to add the annotate to the controller class.
 
 ```php
@@ -206,6 +216,7 @@ class FirstController extends Controller
 > The "route" annotation works as a group function in Laravel.
 
 **Available options for Router annotation:**
+
 - _as_ - the name of a group,
 - _prefix_ - the prefix of a group,
 - _domain_ - the domain of a group,
@@ -237,6 +248,7 @@ class FirstController extends Controller
 Our route: `GET - / - index > FirstController@index`
 
 **Available options for Method annotation:**
+
 - _uri_ - the address URL for a route,
 - _method_ - the method of a route,
 - _name_ - the name of a route,
@@ -244,4 +256,5 @@ Our route: `GET - / - index > FirstController@index`
 - _where_ - the list of where's of a route,
 
 ## Contributing
+
 Feel free to add a new issue! Please describe in detail your problem or idea and I will check your issue and respond - Thank you!
