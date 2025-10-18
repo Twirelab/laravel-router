@@ -56,7 +56,7 @@ it('loads controllers from directory with group configuration', function () {
 it('handles empty directory pattern gracefully', function () {
     $loader = new Loader();
 
-    expect(fn() => $loader->loadFromDirectories([]))
+    expect(fn () => $loader->loadFromDirectories([]))
         ->not->toThrow(Exception::class);
 });
 
@@ -90,7 +90,7 @@ it('verifies all expected routes are registered from directory loading', functio
 
     expect($simpleRoutes)->toHaveCount(2);
 
-    $routeNames = $simpleRoutes->map(fn($route) => $route->getName())->toArray();
+    $routeNames = $simpleRoutes->map(fn ($route) => $route->getName())->toArray();
     expect($routeNames)->toContain('simple.index');
     expect($routeNames)->toContain('simple.show');
 });

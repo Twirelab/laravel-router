@@ -24,7 +24,8 @@ class Method
         public string|array|null $middlewares = null,
         public ?array $where = null,
         public int|Version|null $version = null,
-    ) {}
+    ) {
+    }
 
     public function getUri(): string
     {

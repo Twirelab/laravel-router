@@ -15,7 +15,8 @@ final class Loader
 {
     public function __construct(
         protected array | null $group = null,
-    ) {}
+    ) {
+    }
 
     /**
      * Create a main group.
@@ -57,6 +58,6 @@ final class Loader
             return;
         }
 
-        Route::group($this->group, fn() => App::make($loader)->load(Arr::wrap($path)));
+        Route::group($this->group, fn () => App::make($loader)->load(Arr::wrap($path)));
     }
 }

@@ -31,6 +31,7 @@ class ShowUnavailableRoutes extends Command
     public function handle(): int
     {
         $path = $this->option('path') ?? app_path('Http/Controllers');
+        $path = is_string($path) ? $path : (is_array($path) ? implode(',', $path) : (string) $path);
 
         if (!is_dir($path)) {
             $this->error("Directory {$path} does not exist.");
@@ -65,7 +66,7 @@ class ShowUnavailableRoutes extends Command
     /**
      * Recursively scan directory for controllers.
      */
-    private function scanDirectory(string $path, $unavailableRoutes, array $activeVersions): void
+    private function scanDirectory(string $path, \Illuminate\Support\Collection $unavailableRoutes, array $activeVersions): void
     {
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS)
@@ -81,9 +82,12 @@ class ShowUnavailableRoutes extends Command
     /**
      * Scan individual controller file.
      */
-    private function scanController(string $filePath, $unavailableRoutes, array $activeVersions): void
+    private function scanController(string $filePath, \Illuminate\Support\Collection $unavailableRoutes, array $activeVersions): void
     {
         $content = file_get_contents($filePath);
+        if ($content === false) {
+            return;
+        }
 
         // Basic check if file contains Laravel Router annotations
         if (!str_contains($content, 'Twirelab\\LaravelRouter\\Annotations\\')) {
@@ -125,7 +129,7 @@ class ShowUnavailableRoutes extends Command
     /**
      * Analyze controller for unavailable routes.
      */
-    private function analyzeController(ReflectionClass $class, $unavailableRoutes, array $activeVersions): void
+    private function analyzeController(ReflectionClass $class, \Illuminate\Support\Collection $unavailableRoutes, array $activeVersions): void
     {
         // Get controller version
         $controllerVersion = $this->getControllerVersion($class);
@@ -155,7 +159,7 @@ class ShowUnavailableRoutes extends Command
     /**
      * Analyze method for unavailable routes.
      */
-    private function analyzeMethod(ReflectionClass $class, ReflectionMethod $method, int|Version|null $controllerVersion, $unavailableRoutes, array $activeVersions): void
+    private function analyzeMethod(ReflectionClass $class, ReflectionMethod $method, int|Version|null $controllerVersion, \Illuminate\Support\Collection $unavailableRoutes, array $activeVersions): void
     {
         $methodAttributes = $method->getAttributes(Method::class, ReflectionAttribute::IS_INSTANCEOF);
 
@@ -217,7 +221,8 @@ class ShowUnavailableRoutes extends Command
             return 'Always available';
         }
 
-        return "Version {$normalizedVersion} not in active versions: " . implode(', ', $activeVersions);
+        $versionString = $normalizedVersion instanceof Version ? $normalizedVersion->name : (string) $normalizedVersion;
+        return "Version {$versionString} not in active versions: " . implode(', ', $activeVersions);
     }
 
     /**
@@ -239,7 +244,7 @@ class ShowUnavailableRoutes extends Command
     /**
      * Display unavailable routes in table format.
      */
-    private function displayUnavailableRoutes($routes): void
+    private function displayUnavailableRoutes(\Illuminate\Support\Collection $routes): void
     {
         $headers = ['URL', 'Method', 'Name', 'Controller', 'Version', 'Reason'];
         $rows = [];

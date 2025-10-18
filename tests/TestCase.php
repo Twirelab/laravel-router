@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Twirelab\LaravelRouter\LaravelRouterServiceProvider;
 

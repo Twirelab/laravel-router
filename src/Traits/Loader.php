@@ -40,7 +40,7 @@ trait Loader
 
         Route::group(
             $controller,
-            fn(LaravelRouter $router) => $this->loadMethods(
+            fn (LaravelRouter $router) => $this->loadMethods(
                 router: $router,
                 methods: $class->getMethods(),
                 data: $controller,
@@ -149,12 +149,12 @@ trait Loader
             ->name($name)
             ->middleware($annotation->getMiddlewares());
 
-        if ($annotation->getWhere() && is_object($route)) {
+        if ($annotation->getWhere() && $route instanceof \Illuminate\Routing\Route) {
             $route->where($annotation->getWhere());
         }
 
         // Store version metadata on route for commands
-        if (is_object($route) && method_exists($route, 'setAction')) {
+        if ($route instanceof \Illuminate\Routing\Route && method_exists($route, 'setAction')) {
             $action = $route->getAction();
             $action['laravel_router_version'] = $this->normalizeVersion($version);
             $route->setAction($action);
@@ -191,7 +191,8 @@ trait Loader
         }
 
         $prefix = config('laravel-router.version_prefix', 'v');
-        $versionPrefix = $prefix ? "/{$prefix}{$normalizedVersion}" : "/{$normalizedVersion}";
+        $versionString = $normalizedVersion instanceof Version ? $normalizedVersion->name : (string) $normalizedVersion;
+        $versionPrefix = $prefix ? "/{$prefix}{$versionString}" : "/{$versionString}";
 
         return $versionPrefix . $uri;
     }

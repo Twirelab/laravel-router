@@ -19,7 +19,7 @@ it('accepts array parameter', function () {
     $loader = new DirectoryLoader();
 
     // Test that it accepts array parameter
-    expect(fn() => $loader->load([__DIR__ . '/../../Fixtures/Controllers/SimpleController.php']))
+    expect(fn () => $loader->load([__DIR__ . '/../../Fixtures/Controllers/SimpleController.php']))
         ->toThrow(Exception::class); // Will throw because Laravel app is not set up
 });
 
@@ -27,7 +27,7 @@ it('handles empty glob results', function () {
     $loader = new DirectoryLoader();
 
     // Test with a pattern that returns empty results (not false)
-    expect(fn() => $loader->load(['/invalid/path/that/does/not/exist/*']))
+    expect(fn () => $loader->load(['/invalid/path/that/does/not/exist/*']))
         ->not->toThrow(Exception::class);
 });
 
@@ -38,7 +38,7 @@ it('throws exception for non-readable file', function () {
     $tempFile = tempnam(sys_get_temp_dir(), 'test');
     chmod($tempFile, 0000); // Remove all permissions
 
-    expect(fn() => $loader->load([$tempFile]))
+    expect(fn () => $loader->load([$tempFile]))
         ->toThrow(InvalidControllerException::class, "Unable to read file \"{$tempFile}\".");
 
     // Clean up
@@ -53,7 +53,7 @@ it('throws exception for file without class', function () {
     $tempFile = tempnam(sys_get_temp_dir(), 'test');
     file_put_contents($tempFile, '<?php echo "no class here";');
 
-    expect(fn() => $loader->load([$tempFile]))
+    expect(fn () => $loader->load([$tempFile]))
         ->toThrow(InvalidControllerException::class, "No class found in file \"{$tempFile}\".");
 
     unlink($tempFile);

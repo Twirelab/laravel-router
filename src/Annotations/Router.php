@@ -22,7 +22,8 @@ class Router
         public ?string $domain = null,
         public string|array|null $middlewares = [],
         public int|Version|null $version = null,
-    ) {}
+    ) {
+    }
 
     public function getName(): ?string
     {

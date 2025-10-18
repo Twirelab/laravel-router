@@ -1,6 +1,5 @@
 <?php
 
-use Tests\Fixtures\Controllers\SimpleController;
 use Twirelab\LaravelRouter\Classes\Loader;
 
 it('creates new loader instance with group', function () {

@@ -16,7 +16,7 @@ beforeEach(function () {
 it('registers routes with neutral version', function () {
     config(['laravel-router.active_versions' => [1, 2]]);
 
-    $controller = new class {
+    $controller = new class () {
         #[Method('/test', Methods::GET, version: Version::NEUTRAL)]
         public function test()
         {
@@ -37,7 +37,7 @@ it('registers routes with neutral version', function () {
 it('registers routes with active version', function () {
     config(['laravel-router.active_versions' => [1, 2]]);
 
-    $controller = new class {
+    $controller = new class () {
         #[Method('/test', Methods::GET, version: 1)]
         public function test()
         {
@@ -58,7 +58,7 @@ it('registers routes with active version', function () {
 it('skips routes with inactive version', function () {
     config(['laravel-router.active_versions' => [1, 2]]);
 
-    $controller = new class {
+    $controller = new class () {
         #[Method('/test', Methods::GET, version: 3)]
         public function test()
         {
@@ -120,7 +120,7 @@ it('uses custom version prefix', function () {
         'laravel-router.version_prefix' => 'api'
     ]);
 
-    $controller = new class {
+    $controller = new class () {
         #[Method('/test', Methods::GET, version: 1)]
         public function test()
         {
@@ -143,7 +143,7 @@ it('disables version in url', function () {
         'laravel-router.version_in_url' => false
     ]);
 
-    $controller = new class {
+    $controller = new class () {
         #[Method('/test', Methods::GET, version: 1)]
         public function test()
         {
@@ -166,7 +166,7 @@ it('handles empty version prefix', function () {
         'laravel-router.version_prefix' => ''
     ]);
 
-    $controller = new class {
+    $controller = new class () {
         #[Method('/test', Methods::GET, version: 1)]
         public function test()
         {

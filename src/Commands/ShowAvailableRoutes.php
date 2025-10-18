@@ -35,9 +35,10 @@ class ShowAvailableRoutes extends Command
 
         $versionFilter = $this->option('version');
         if ($versionFilter !== null) {
-            $routes = $routes->filter(function (Route $route) use ($versionFilter) {
+            $versionFilterString = is_string($versionFilter) ? $versionFilter : (is_array($versionFilter) ? implode(',', $versionFilter) : (string) $versionFilter);
+            $routes = $routes->filter(function (Route $route) use ($versionFilterString) {
                 $version = $route->getAction('laravel_router_version');
-                return $this->matchesVersion($version, $versionFilter);
+                return $this->matchesVersion($version, $versionFilterString);
             });
         }
 
@@ -49,9 +50,14 @@ class ShowAvailableRoutes extends Command
     /**
      * Get routes registered by Laravel Router.
      */
-    private function getLaravelRouterRoutes()
+    private function getLaravelRouterRoutes(): \Illuminate\Support\Collection
     {
-        return collect(RouteFacade::getRoutes())
+        $routes = RouteFacade::getRoutes();
+
+        // Cast RouteCollectionInterface to array
+        $routeArray = (array) $routes;
+
+        return collect($routeArray)
             ->filter(function (Route $route) {
                 return $route->getAction('laravel_router_version') !== null;
             });
@@ -60,7 +66,7 @@ class ShowAvailableRoutes extends Command
     /**
      * Display routes in table format.
      */
-    private function displayRoutes($routes): void
+    private function displayRoutes(\Illuminate\Support\Collection $routes): void
     {
         $headers = ['URL', 'Method', 'Name', 'Controller', 'Version'];
         $rows = [];
@@ -108,13 +114,17 @@ class ShowAvailableRoutes extends Command
             return 'NEUTRAL';
         }
 
+        if ($version instanceof Version) {
+            return $version->name;
+        }
+
         return (string) $version;
     }
 
     /**
      * Check if version matches filter.
      */
-    private function matchesVersion(int|Version $version, string $filter): bool
+    private function matchesVersion(int|Version|null $version, string $filter): bool
     {
         if ($filter === 'neutral' && $version === Version::NEUTRAL) {
             return true;

@@ -30,7 +30,7 @@ it('can be created from string value', function () {
 });
 
 it('throws exception for invalid string value', function () {
-    expect(fn() => Methods::from('invalid'))
+    expect(fn () => Methods::from('invalid'))
         ->toThrow(ValueError::class);
 });
 

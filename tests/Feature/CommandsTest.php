@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use Twirelab\LaravelRouter\Annotations\Method;
 use Twirelab\LaravelRouter\Enums\Methods;
-use Twirelab\LaravelRouter\Enums\Version;
 
 beforeEach(function () {
     Route::getRoutes()->refreshNameLookups();
@@ -15,7 +14,7 @@ beforeEach(function () {
 it('shows available routes command', function () {
     config(['laravel-router.active_versions' => [1, 2]]);
 
-    $controller = new class {
+    $controller = new class () {
         #[Method('/test', Methods::GET, version: 1, name: 'test.index')]
         public function test()
         {
@@ -82,7 +81,7 @@ class TestUnavailableController
 it('filters routes by version in available routes command', function () {
     config(['laravel-router.active_versions' => [1, 2]]);
 
-    $controller = new class {
+    $controller = new class () {
         #[Method('/test1', Methods::GET, version: 1, name: 'test1')]
         public function test1()
         {
