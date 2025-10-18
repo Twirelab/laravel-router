@@ -13,6 +13,10 @@ abstract class TestCase extends Orchestra
 
         // Clear routes before each test
         $this->app['router']->getRoutes()->refreshNameLookups();
+
+        // Force boot the service provider to register commands
+        $provider = new LaravelRouterServiceProvider($this->app);
+        $provider->boot();
     }
 
     protected function getPackageProviders($app): array

@@ -9,7 +9,7 @@ use Twirelab\LaravelRouter\Enums\Methods;
 #[Router(prefix: 'api/v1', as: 'api.', middlewares: ['api', 'throttle'])]
 class GroupedController
 {
-    #[Method('/users', Methods::GET, middlewares: ['auth'])]
+    #[Method('/users', Methods::GET, name: 'users.index', middlewares: ['auth'])]
     public function index(): string
     {
         return 'users index';
@@ -21,7 +21,7 @@ class GroupedController
         return "user show {$id}";
     }
 
-    #[Method('/users', Methods::POST, middlewares: ['auth', 'admin'])]
+    #[Method('/users', Methods::POST, name: 'users.store', middlewares: ['auth', 'admin'])]
     public function store(): string
     {
         return 'user created';
